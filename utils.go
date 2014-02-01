@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"image/png"
 	"io/ioutil"
+	"math"
 	"math/rand"
 	"os"
 	"strconv"
@@ -26,7 +27,8 @@ func loadFont(path string) *truetype.Font {
 }
 
 type Gummy struct {
-	img *image.RGBA
+	img   *image.RGBA
+	color *color.Color
 }
 
 func NewDefaultGummy(w, h int) (*Gummy, error) {
@@ -42,7 +44,8 @@ func NewGummy(x, y, w, h int, gummyColor color.Color) (*Gummy, error) {
 	}
 
 	return &Gummy{
-		img: img,
+		img:   img,
+		color: &gummyColor,
 	}, nil
 }
 
@@ -80,7 +83,18 @@ func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition 
 }
 
 // Color in HEX format: FAFAFA
+// If "" the color of the text is black or white depending on the brightness of the bg
 func (g *Gummy) DrawTextSize(textColor string) error {
+
+	// Get black or white depending on the background
+	if textColor == "" {
+		c := (*g.color).(color.RGBA)
+		if blackWithBackground(float64(c.R), float64(c.G), float64(c.B)) {
+			textColor = "000000"
+		} else {
+			textColor = "FFFFFF"
+		}
+	}
 
 	text := fmt.Sprintf("%dx%d", g.img.Rect.Max.X, g.img.Rect.Max.Y)
 
@@ -100,7 +114,7 @@ func (g *Gummy) DrawTextSize(textColor string) error {
 
 	return g.DrawText(
 		text,
-		textCcolor,
+		textColor,
 		fontSize,
 		x,
 		y,
@@ -134,4 +148,25 @@ func randColor(alpha int) color.Color {
 
 	return color.RGBA{r, g, b, uint8(alpha)}
 
+}
+
+func inverseColor(r, g, b int) (rr, rg, rb int) {
+	rr = 255 - r
+	rg = 255 - g
+	rb = 255 - b
+
+	return
+}
+
+// Returns false if white text with that background
+// Rrturns true if black text with that background
+// Calculates based on the brightness
+// Source: http://stackoverflow.com/a/2241471
+func blackWithBackground(r, g, b float64) bool {
+
+	perceivedBrightness := func(r, g, b float64) int {
+		return int(math.Sqrt(r*r*0.241 + g*g*0.691 + b*b*0.068))
+	}
+
+	return perceivedBrightness(r, g, b) > 130
 }
