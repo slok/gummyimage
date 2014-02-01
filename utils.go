@@ -80,11 +80,11 @@ func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition 
 }
 
 // Color in HEX format: FAFAFA
-func (g *Gummy) DrawTextSize(color string) error {
+func (g *Gummy) DrawTextSize(textColor string) error {
 
 	text := fmt.Sprintf("%dx%d", g.img.Rect.Max.X, g.img.Rect.Max.Y)
 
-	// I can get the text final size so more or less center the text with this
+	// I can't get the text final size so more or less center the text with this
 	// manual awful stuff :/
 	size := g.img.Rect.Max.Y
 
@@ -92,15 +92,15 @@ func (g *Gummy) DrawTextSize(color string) error {
 		size = g.img.Rect.Max.X
 	}
 
-	textSpace := (size - (size / 10 * 2))
-	fontSize := textSpace / len(text) * 2
+	textSize := (size - (size / 10 * 2))
+	fontSize := textSize / len(text) * 2
 
-	x := g.img.Rect.Max.X/2 - textSpace/2 - fontSize/8
-	y := g.img.Rect.Max.Y/2 + textSpace/10 + fontSize/16
+	x := g.img.Rect.Max.X/2 - textSize/2 - fontSize/8
+	y := g.img.Rect.Max.Y/2 + textSize/10 + fontSize/16
 
 	return g.DrawText(
 		text,
-		color,
+		textCcolor,
 		fontSize,
 		x,
 		y,
