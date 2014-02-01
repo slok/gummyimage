@@ -17,19 +17,10 @@ import (
 	"code.google.com/p/freetype-go/freetype/truetype"
 )
 
-var (
-	font = loadFont("./gummyimage/DroidSans.ttf")
-)
-
-func loadFont(path string) *truetype.Font {
-	bs, _ := ioutil.ReadFile(path)
-	f, _ := truetype.Parse(bs)
-	return f
-}
-
 type Gummy struct {
-	img   *image.RGBA
-	color *color.Color
+	Img   *image.RGBA
+	Color *color.Color
+	Font  *truetype.Font
 }
 
 func NewDefaultGummy(w, h int) (*Gummy, error) {
@@ -45,8 +36,9 @@ func NewGummy(x, y, w, h int, gummyColor color.Color) (*Gummy, error) {
 	}
 
 	return &Gummy{
-		img:   img,
-		color: &gummyColor,
+		Img:   img,
+		Color: &gummyColor,
+		Font:  nil,
 	}, nil
 }
 
@@ -58,13 +50,13 @@ func (g *Gummy) SavePng(path string) error {
 	}
 	defer file.Close()
 
-	return png.Encode(file, g.img)
+	return png.Encode(file, g.Img)
 }
 
 func (g *Gummy) GetPng() ([]byte, error) {
 
 	b := new(bytes.Buffer)
-	png.Encode(b, g.img)
+	png.Encode(b, g.Img)
 	return b.Bytes(), nil
 }
 
@@ -72,9 +64,9 @@ func (g *Gummy) GetPng() ([]byte, error) {
 func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition int) error {
 
 	fc := freetype.NewContext()
-	fc.SetDst(g.img)
-	fc.SetFont(font)
-	fc.SetClip(g.img.Bounds())
+	fc.SetDst(g.Img)
+	fc.SetFont(g.Font)
+	fc.SetClip(g.Img.Bounds())
 
 	// Color parsing
 	cr, _ := strconv.ParseUint(textColor[:2], 16, 64)
@@ -96,7 +88,7 @@ func (g *Gummy) DrawTextSize(textColor string) error {
 
 	// Get black or white depending on the background
 	if textColor == "" {
-		c := (*g.color).(color.RGBA)
+		c := (*g.Color).(color.RGBA)
 		if blackWithBackground(float64(c.R), float64(c.G), float64(c.B)) {
 			textColor = "000000"
 		} else {
@@ -104,21 +96,21 @@ func (g *Gummy) DrawTextSize(textColor string) error {
 		}
 	}
 
-	text := fmt.Sprintf("%dx%d", g.img.Rect.Max.X, g.img.Rect.Max.Y)
+	text := fmt.Sprintf("%dx%d", g.Img.Rect.Max.X, g.Img.Rect.Max.Y)
 
 	// I can't get the text final size so more or less center the text with this
 	// manual awful stuff :/
-	size := g.img.Rect.Max.Y
+	size := g.Img.Rect.Max.Y
 
-	if g.img.Rect.Max.X < g.img.Rect.Max.Y {
-		size = g.img.Rect.Max.X
+	if g.Img.Rect.Max.X < g.Img.Rect.Max.Y {
+		size = g.Img.Rect.Max.X
 	}
 
 	textSize := (size - (size / 10 * 2))
 	fontSize := textSize / len(text) * 2
 
-	x := g.img.Rect.Max.X/2 - textSize/2 - fontSize/8
-	y := g.img.Rect.Max.Y/2 + textSize/10 + fontSize/16
+	x := g.Img.Rect.Max.X/2 - textSize/2 - fontSize/8
+	y := g.Img.Rect.Max.Y/2 + textSize/10 + fontSize/16
 
 	return g.DrawText(
 		text,
@@ -127,6 +119,23 @@ func (g *Gummy) DrawTextSize(textColor string) error {
 		x,
 		y,
 	)
+}
+
+func LoadFont(path string) (*truetype.Font, error) {
+	bs, err := ioutil.ReadFile(path)
+
+	// quick debug
+	if err != nil {
+		fmt.Println(err)
+	}
+	f, err := truetype.Parse(bs)
+	return f, err
+}
+
+func (g *Gummy) SetFont(path string) error {
+	f, err := LoadFont(path)
+	g.Font = f
+	return err
 }
 
 func createImg(x, y, w, h int, gummyColor color.Color) (*image.RGBA, error) {
