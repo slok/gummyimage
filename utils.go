@@ -83,51 +83,20 @@ func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition 
 func (g *Gummy) DrawTextSize(color string) error {
 
 	text := fmt.Sprintf("%dx%d", g.img.Rect.Max.X, g.img.Rect.Max.Y)
-	// I can get the text final size so more or less center the text with this
-	// awful stuff :/
 
-	size := 0
-	fontFactor := 0
+	// I can get the text final size so more or less center the text with this
+	// manual awful stuff :/
+	size := g.img.Rect.Max.Y
 
 	if g.img.Rect.Max.X < g.img.Rect.Max.Y {
 		size = g.img.Rect.Max.X
-		fontFactor = g.img.Rect.Max.Y / g.img.Rect.Max.X * 2
-	} else {
-		size = g.img.Rect.Max.Y
-		fontFactor = g.img.Rect.Max.X / g.img.Rect.Max.Y * 2
 	}
 
 	textSpace := (size - (size / 10 * 2))
-	fontSize := textSpace / len(text) * fontFactor
-	x := g.img.Rect.Max.X/2 - textSpace/2 - fontSize/8*(fontFactor+1)
-	y := g.img.Rect.Max.Y/2 + textSpace/10 + fontSize/16*(fontFactor+1)
+	fontSize := textSpace / len(text) * 2
 
-	/*
-	   text := fmt.Sprintf("%dx%d", g.img.Rect.Max.X, g.img.Rect.Max.Y)
-	   // I can get the text final size so more or less center the text with this
-	   // awful stuff :/
-
-	   // Get minimun size for correct font
-	   size := g.img.Rect.Max.Y
-	   fontFactor := 2
-
-	   if g.img.Rect.Max.X < g.img.Rect.Max.Y {
-	       size = g.img.Rect.Max.X
-	   }
-
-	   // Get total space for the font
-	   textSpace := (size - (size / 10 * 2))
-
-	   // Get the font size based on the size of the text (manual approximation)
-	   fontSize := textSpace / len(text) * fontFactor
-
-	   //Get approx the center based on the calculated data
-	   x := g.img.Rect.Max.X/2 - textSpace/2 - fontSize/2
-	   y := g.img.Rect.Max.Y/2 + textSpace/10 + fontSize/4
-
-	   //x := g.img.Rect.Max.X/2 - ((g.img.Rect.Max.X - (g.img.Rect.Max.X / 10 * 2)) / 2) - fontSize/8
-	   //y := g.img.Rect.Max.Y/2 + ((g.img.Rect.Max.Y - (g.img.Rect.Max.Y / 10 * 2)) / 10) + fontSize/8
-	*/
+	x := g.img.Rect.Max.X/2 - textSpace/2 - fontSize/8
+	y := g.img.Rect.Max.Y/2 + textSpace/10 + fontSize/16
 
 	return g.DrawText(
 		text,
