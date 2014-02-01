@@ -1,6 +1,7 @@
 package gummyimage
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/color"
@@ -58,6 +59,13 @@ func (g *Gummy) SavePng(path string) error {
 	defer file.Close()
 
 	return png.Encode(file, g.img)
+}
+
+func (g *Gummy) GetPng() ([]byte, error) {
+
+	b := new(bytes.Buffer)
+	png.Encode(b, g.img)
+	return b.Bytes(), nil
 }
 
 // Color in HEX format: FAFAFA
