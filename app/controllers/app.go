@@ -26,7 +26,9 @@ type ImageResponse struct {
 
 // Global variable
 var (
-	font *truetype.Font
+	font             *truetype.Font
+	regularSizeRegex = regexp.MustCompile(`^(.+)[xX](.+)$`)
+	aspectSizeRegex  = regexp.MustCompile(`^(.+):(.+)$`)
 )
 
 // Custom responses -----------------------------------------------------------
@@ -65,51 +67,49 @@ func (c Application) CreateImage() revel.Result {
 	bgColor := c.Params.Get("bgcolor")
 	fgColor := c.Params.Get("fgcolor")
 
-	var x int
-	var y int
+	var x, y int
+	var tx, ty int64
 
 	// Get correct size flow
 
+	// Check if is a standard size
+	if s, found := revel.Config.String(fmt.Sprintf("size.%v", size)); found {
+		size = s
+	}
+
 	// Normal size (nnnxnnn, nnnXnnn)
-	r := regexp.MustCompile(`^(.+)[xX](.+)$`)
-	sizes := r.FindStringSubmatch(size)
+	sizes := regularSizeRegex.FindStringSubmatch(size)
 	if len(sizes) > 0 {
 		// Check if aspect (nn:nn)
-		r := regexp.MustCompile(`^(.+):(.+)$`)
-		left := r.FindStringSubmatch(sizes[1])
-		right := r.FindStringSubmatch(sizes[2])
+
+		left := aspectSizeRegex.FindStringSubmatch(sizes[1])
+		right := aspectSizeRegex.FindStringSubmatch(sizes[2])
 
 		// If both scale then error
 		if len(left) > 0 && len(right) > 0 {
 			//return error
-		} else if len(left) > 0 {
-			ty, _ := strconv.ParseInt(sizes[2], 10, 0)
+		} else if len(left) > 0 { // nn:nnXnnn
+			ty, _ = strconv.ParseInt(sizes[2], 10, 0)
 			tll, _ := strconv.ParseInt(left[1], 10, 0)
 			tlr, _ := strconv.ParseInt(left[2], 10, 0)
-			tx := ty * tll / tlr
-		} else if len(right) > 0 {
-			tx, _ := strconv.ParseInt(sizes[1], 10, 0)
+			tx = ty * tll / tlr
+		} else if len(right) > 0 { // nnnXnn:nn
+			tx, _ = strconv.ParseInt(sizes[1], 10, 0)
 			trl, _ := strconv.ParseInt(right[1], 10, 0)
 			trr, _ := strconv.ParseInt(right[2], 10, 0)
-			ty := tx * trr / trl
-		} else {
-			tx, _ := strconv.ParseInt(sizes[1], 10, 0)
-			ty, _ := strconv.ParseInt(sizes[2], 10, 0)
+			ty = tx * trr / trl
+		} else { // nnnXnnn
+			tx, _ = strconv.ParseInt(sizes[1], 10, 0)
+			ty, _ = strconv.ParseInt(sizes[2], 10, 0)
 		}
 
 		x = int(tx)
 		y = int(ty)
 
-	} else { // Check if Square (nnn)
-		tx, err := strconv.ParseInt(size, 10, 0)
-
-		if err != nil { // Check if predefined size (nnn)
-			fmt.Println("predefined")
-		} else {
-			x = int(tx)
-			y = x
-		}
-
+	} else { // Square (nnn)
+		tx, _ := strconv.ParseInt(size, 10, 0)
+		x = int(tx)
+		y = x
 	}
 
 	// Check limits, don't allow gigantic images :P
