@@ -46,8 +46,7 @@ func (r ImageResponse) Apply(req *revel.Request, resp *revel.Response) {
 
 	resp.WriteHeader(http.StatusOK, "image/png")
 
-	//TODO: Random color for now
-	g, _ := gummyimage.NewDefaultGummy(r.sizeX, r.sizeY)
+	g, _ := gummyimage.NewDefaultGummy(r.sizeX, r.sizeY, r.bgColor)
 	g.Font = font
 	g.DrawTextSize(r.fgColor)
 
@@ -85,7 +84,7 @@ func (c Application) CreateImage() revel.Result {
 	tmx, _ := strconv.ParseInt(maxX, 10, 0)
 	tmy, _ := strconv.ParseInt(maxY, 10, 0)
 	if x > int(tmx) || y > int(tmy) {
-		return c.RenderText("wow, very big, too image, much pixels")
+		return c.RenderText("wow, very big, too image,// Color in HEX format: FAFAFA much pixels")
 	}
 
 	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", "png"})
