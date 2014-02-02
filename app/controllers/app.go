@@ -27,9 +27,10 @@ type ImageResponse struct {
 
 // Global variable
 var (
-	font             *truetype.Font
-	regularSizeRegex = regexp.MustCompile(`^(.+)[xX](.+)$`)
-	aspectSizeRegex  = regexp.MustCompile(`^(.+):(.+)$`)
+	font              *truetype.Font
+	regularSizeRegex  = regexp.MustCompile(`^(.+)[xX](.+)$`)
+	aspectSizeRegex   = regexp.MustCompile(`^(.+):(.+)$`)
+	correctColorRegex = regexp.MustCompile(`^[A-Fa-f0-9]{2,6}$`)
 )
 
 // Custom responses -----------------------------------------------------------
@@ -67,11 +68,7 @@ func (c Application) CreateImage() revel.Result {
 	bgColor := c.Params.Get("bgcolor")
 	fgColor := c.Params.Get("fgcolor")
 
-	// Set defaults
-	if bgColor == "" {
-		bgColor = "CCCCCC"
-	}
-
+	bgColor, err := colorOk(bgColor)
 	x, y, err := getSize(size)
 
 	if err != nil {
@@ -146,5 +143,30 @@ func getSize(size string) (x, y int, err error) {
 	if x == 0 || y == 0 {
 		err = errors.New("Not correct size")
 	}
+	return
+}
+
+func colorOk(color string) (bgColor string, err error) {
+
+	// Set defaults
+	if color == "" {
+		bgColor, _ = revel.Config.String("gummyimage.bgcolor.default")
+		return
+	} else if !correctColorRegex.MatchString(color) {
+		bgColor, _ = revel.Config.String("gummyimage.bgcolor.default")
+		err = errors.New("Wrong color format")
+		return
+	} else {
+		switch len(color) {
+		case 2:
+			bgColor = fmt.Sprintf("%v%v%v", color, color, color)
+			return
+		case 3:
+			bgColor = fmt.Sprintf("%v%v%v%v%v%v", color[0], color[0],
+				color[1], color[1], color[2], color[2])
+			return
+		}
+	}
+	bgColor = color
 	return
 }
