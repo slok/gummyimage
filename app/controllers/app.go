@@ -78,9 +78,9 @@ func (c Application) CreateImage() revel.Result {
 	// Check limits, don't allow gigantic images :P
 	maxY, _ := revel.Config.String("gummyimage.max.height")
 	maxX, _ := revel.Config.String("gummyimage.max.width")
-	tmx, _ := strconv.ParseInt(maxX, 10, 0)
-	tmy, _ := strconv.ParseInt(maxY, 10, 0)
-	if x > int(tmx) || y > int(tmy) {
+	tmx, _ := strconv.Atoi(maxX)
+	tmy, _ := strconv.Atoi(maxY)
+	if x > tmx || y > tmy {
 		return c.RenderText("wow, very big, too image,// Color in HEX format: FAFAFA much pixels")
 	}
 
@@ -96,7 +96,6 @@ func (c Application) CreateImage() revel.Result {
 //  - Square: nnn
 //  - Regular: nnnXnnn & nnnxnnn
 func getSize(size string) (x, y int, err error) {
-	var tx, ty int64
 
 	// Check if is a standard size
 	if s, found := revel.Config.String(fmt.Sprintf("size.%v", size)); found {
@@ -117,26 +116,22 @@ func getSize(size string) (x, y int, err error) {
 			return
 
 		} else if len(left) > 0 { // nn:nnXnnn
-			ty, _ = strconv.ParseInt(sizes[2], 10, 0)
-			tll, _ := strconv.ParseInt(left[1], 10, 0)
-			tlr, _ := strconv.ParseInt(left[2], 10, 0)
-			tx = ty * tll / tlr
+			y, _ = strconv.Atoi(sizes[2])
+			tll, _ := strconv.Atoi(left[1])
+			tlr, _ := strconv.Atoi(left[2])
+			x = y * tll / tlr
 		} else if len(right) > 0 { // nnnXnn:nn
-			tx, _ = strconv.ParseInt(sizes[1], 10, 0)
-			trl, _ := strconv.ParseInt(right[1], 10, 0)
-			trr, _ := strconv.ParseInt(right[2], 10, 0)
-			ty = tx * trr / trl
+			x, _ = strconv.Atoi(sizes[1])
+			trl, _ := strconv.Atoi(right[1])
+			trr, _ := strconv.Atoi(right[2])
+			y = x * trr / trl
 		} else { // nnnXnnn
-			tx, _ = strconv.ParseInt(sizes[1], 10, 0)
-			ty, _ = strconv.ParseInt(sizes[2], 10, 0)
+			x, _ = strconv.Atoi(sizes[1])
+			y, _ = strconv.Atoi(sizes[2])
 		}
 
-		x = int(tx)
-		y = int(ty)
-
 	} else { // Square (nnn)
-		tx, _ := strconv.ParseInt(size, 10, 0)
-		x = int(tx)
+		x, _ = strconv.Atoi(size)
 		y = x
 	}
 
