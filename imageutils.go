@@ -31,9 +31,9 @@ func NewDefaultGummy(w, h int, hexColor string) (*Gummy, error) {
 		bgColor = randColor(255)
 
 	} else {
-		cr, _ := strconv.ParseUint(hexColor[:2], 16, 64)
-		cg, _ := strconv.ParseUint(hexColor[2:4], 16, 64)
-		cb, _ := strconv.ParseUint(hexColor[4:], 16, 64)
+		cr, _ := strconv.ParseUint(string(hexColor[:2]), 16, 64)
+		cg, _ := strconv.ParseUint(string(hexColor[2:4]), 16, 64)
+		cb, _ := strconv.ParseUint(string(hexColor[4:]), 16, 64)
 		bgColor = color.RGBA{R: uint8(cr), G: uint8(cg), B: uint8(cb), A: 255}
 	}
 
@@ -82,9 +82,9 @@ func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition 
 	fc.SetClip(g.Img.Bounds())
 
 	// Color parsing
-	cr, _ := strconv.ParseUint(textColor[:2], 16, 64)
-	cg, _ := strconv.ParseUint(textColor[2:4], 16, 64)
-	cb, _ := strconv.ParseUint(textColor[4:], 16, 64)
+	cr, _ := strconv.ParseUint(string(textColor[:2]), 16, 64)
+	cg, _ := strconv.ParseUint(string(textColor[2:4]), 16, 64)
+	cb, _ := strconv.ParseUint(string(textColor[4:]), 16, 64)
 	c := image.NewUniform(color.RGBA{R: uint8(cr), G: uint8(cg), B: uint8(cb), A: 255})
 
 	fc.SetSrc(c)
