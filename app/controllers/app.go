@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -67,10 +68,39 @@ func (c Application) CreateImage() revel.Result {
 	bgColor := c.Params.Get("bgcolor")
 	fgColor := c.Params.Get("fgcolor")
 
-	var x, y int
-	var tx, ty int64
+	// Set defaults
+	if bgColor == "" {
+		bgColor = "CCCCCC"
+	}
 
-	// Get correct size flow
+	x, y, err := getSize(size)
+
+	if err != nil {
+		return c.RenderText("Wrong size format")
+	}
+
+	// Check limits, don't allow gigantic images :P
+	maxY, _ := revel.Config.String("gummyimage.max.height")
+	maxX, _ := revel.Config.String("gummyimage.max.width")
+	tmx, _ := strconv.ParseInt(maxX, 10, 0)
+	tmy, _ := strconv.ParseInt(maxY, 10, 0)
+	if x > int(tmx) || y > int(tmy) {
+		return c.RenderText("wow, very big, too image, much pixels")
+	}
+
+	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", "png"})
+}
+
+// Helpers--------------------------------------------------------------------
+
+// Gets the correct size based on the patern
+// Supports:
+//  - Predefined sizes (in app.conf)
+//  - Aspect sizes: nnnXnn:nn & nn:nnXnnn
+//  - Square: nnn
+//  - Regular: nnnXnnn & nnnxnnn
+func getSize(size string) (x, y int, err error) {
+	var tx, ty int64
 
 	// Check if is a standard size
 	if s, found := revel.Config.String(fmt.Sprintf("size.%v", size)); found {
@@ -87,7 +117,9 @@ func (c Application) CreateImage() revel.Result {
 
 		// If both scale then error
 		if len(left) > 0 && len(right) > 0 {
-			//return error
+			err = errors.New("Not correct size")
+			return
+
 		} else if len(left) > 0 { // nn:nnXnnn
 			ty, _ = strconv.ParseInt(sizes[2], 10, 0)
 			tll, _ := strconv.ParseInt(left[1], 10, 0)
@@ -112,7 +144,8 @@ func (c Application) CreateImage() revel.Result {
 		y = x
 	}
 
-	// Check limits, don't allow gigantic images :P
-
-	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", "png"})
+	if x == 0 || y == 0 {
+		err = errors.New("Not correct size")
+	}
+	return
 }
