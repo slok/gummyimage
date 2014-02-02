@@ -23,8 +23,21 @@ type Gummy struct {
 	Font  *truetype.Font
 }
 
-func NewDefaultGummy(w, h int) (*Gummy, error) {
-	return NewGummy(0, 0, w, h, randColor(255))
+// Color in HEX format: FAFAFA
+// If hexColor = "" then random color
+func NewDefaultGummy(w, h int, hexColor string) (*Gummy, error) {
+	var bgColor color.Color
+	if hexColor == "" {
+		bgColor = randColor(255)
+
+	} else {
+		cr, _ := strconv.ParseUint(hexColor[:2], 16, 64)
+		cg, _ := strconv.ParseUint(hexColor[2:4], 16, 64)
+		cb, _ := strconv.ParseUint(hexColor[4:], 16, 64)
+		bgColor = color.RGBA{R: uint8(cr), G: uint8(cg), B: uint8(cb), A: 255}
+	}
+
+	return NewGummy(0, 0, w, h, bgColor)
 }
 
 func NewGummy(x, y, w, h int, gummyColor color.Color) (*Gummy, error) {
