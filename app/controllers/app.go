@@ -159,11 +159,13 @@ func colorOk(color string) (bgColor string, err error) {
 	} else {
 		switch len(color) {
 		case 2:
-			bgColor = fmt.Sprintf("%v%v%v", color, color, color)
+			bgColor = fmt.Sprintf("%s%s%s", color, color, color)
 			return
 		case 3:
-			bgColor = fmt.Sprintf("%v%v%v%v%v%v", color[0], color[0],
-				color[1], color[1], color[2], color[2])
+			c1 := string(color[0])
+			c2 := string(color[1])
+			c3 := string(color[2])
+			bgColor = fmt.Sprintf("%s%s%s%s%s%s", c1, c1, c2, c2, c3, c3)
 			return
 		}
 	}
