@@ -2,10 +2,14 @@ package gummyimage
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
+	"image/gif"
+	"image/jpeg"
 	"image/png"
+	"io"
 	"io/ioutil"
 	"math"
 	"math/rand"
@@ -55,22 +59,71 @@ func NewGummy(x, y, w, h int, gummyColor color.Color) (*Gummy, error) {
 	}, nil
 }
 
-func (g *Gummy) SavePng(path string) error {
-	file, err := os.Create(path)
+/*
+Gets the image in the specified format (JPEG, GIF or PNG) in the specified writer
+*/
+func (g *Gummy) get(format string, r io.Writer) error {
 
+	switch format {
+	case "jpeg", "JPEG":
+		jpeg.Encode(r, g.Img, nil)
+	case "png", "PNG":
+		png.Encode(r, g.Img)
+	case "gif", "GIF":
+		gif.Encode(r, g.Img, nil)
+	default:
+		return errors.New("Wrong format")
+	}
+
+	return nil
+}
+
+func (g *Gummy) SaveJpeg(path string) error {
+	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	return png.Encode(file, g.Img)
+	return g.get("jpeg", file)
+}
+
+func (g *Gummy) SaveGif(path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	return g.get("gif", file)
+}
+
+func (g *Gummy) SavePng(path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	return g.get("png", file)
+}
+
+func (g *Gummy) GetJpeg() ([]byte, error) {
+	b := new(bytes.Buffer)
+	err := g.get("jpeg", b)
+	return b.Bytes(), err
+}
+
+func (g *Gummy) GetGif() ([]byte, error) {
+	b := new(bytes.Buffer)
+	err := g.get("gif", b)
+	return b.Bytes(), err
 }
 
 func (g *Gummy) GetPng() ([]byte, error) {
-
 	b := new(bytes.Buffer)
-	png.Encode(b, g.Img)
-	return b.Bytes(), nil
+	err := g.get("png", b)
+	return b.Bytes(), err
 }
 
 // Color in HEX format: FAFAFA
