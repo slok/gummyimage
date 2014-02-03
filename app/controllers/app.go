@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
@@ -31,6 +32,7 @@ var (
 	regularSizeRegex  = regexp.MustCompile(`^(.+)[xX](.+)$`)
 	aspectSizeRegex   = regexp.MustCompile(`^(.+):(.+)$`)
 	correctColorRegex = regexp.MustCompile(`^[A-Fa-f0-9]{2,6}$`)
+	formatRegex       = regexp.MustCompile(`\.(jpg|jpeg|JPG|JPEG|gif|GIF|png|PNG)`)
 )
 
 // Custom responses -----------------------------------------------------------
@@ -51,8 +53,9 @@ func (r ImageResponse) Apply(req *revel.Request, resp *revel.Response) {
 	g.Font = font
 	g.DrawTextSize(r.fgColor)
 
-	b, _ := g.GetPng()
-	resp.Out.Write(b)
+	b := new(bytes.Buffer)
+	g.Get(r.format, b)
+	resp.Out.Write(b.Bytes())
 }
 
 // Actions --------------------------------------------------------------------
@@ -64,12 +67,26 @@ func (c Application) CreateImage() revel.Result {
 
 	// Get params by dict because we use this action for 3 different url routes
 	// with different url params
-	size := c.Params.Get("size")
-	bgColor := c.Params.Get("bgcolor")
-	fgColor := c.Params.Get("fgcolor")
+	var bgColor, fgColor string
+	format, _ := revel.Config.String("gummyimage.format.default")
 
-	bgColor, err := colorOk(bgColor)
-	x, y, err := getSize(size)
+	tmpValues := []string{
+		c.Params.Get("size"),
+		c.Params.Get("bgcolor"),
+		c.Params.Get("fgcolor"),
+	}
+
+	// Get format
+	for k, i := range tmpValues {
+		if f := formatRegex.FindStringSubmatch(i); len(f) > 0 {
+			format = f[1]
+			tmpValues[k] = formatRegex.ReplaceAllString(i, "")
+		}
+	}
+
+	x, y, err := getSize(tmpValues[0])
+	bgColor, err = colorOk(tmpValues[1])
+	fgColor = tmpValues[2]
 
 	if err != nil {
 		return c.RenderText("Wrong size format")
@@ -84,7 +101,7 @@ func (c Application) CreateImage() revel.Result {
 		return c.RenderText("wow, very big, too image,// Color in HEX format: FAFAFA much pixels")
 	}
 
-	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", "png"})
+	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", format})
 }
 
 // Helpers--------------------------------------------------------------------
