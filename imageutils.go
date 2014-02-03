@@ -129,6 +129,16 @@ func (g *Gummy) GetPng() ([]byte, error) {
 // Color in HEX format: FAFAFA
 func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition int) error {
 
+	// Get black or white depending on the background
+	if textColor == "" {
+		c := (*g.Color).(color.RGBA)
+		if blackWithBackground(float64(c.R), float64(c.G), float64(c.B)) {
+			textColor = "000000"
+		} else {
+			textColor = "FFFFFF"
+		}
+	}
+
 	fc := freetype.NewContext()
 	fc.SetDst(g.Img)
 	fc.SetFont(g.Font)
@@ -148,22 +158,7 @@ func (g *Gummy) DrawText(text, textColor string, fontSize, xPosition, yPosition 
 	return err
 }
 
-// Color in HEX format: FAFAFA
-// If "" the color of the text is black or white depending on the brightness of the bg
-func (g *Gummy) DrawTextSize(textColor string) error {
-
-	// Get black or white depending on the background
-	if textColor == "" {
-		c := (*g.Color).(color.RGBA)
-		if blackWithBackground(float64(c.R), float64(c.G), float64(c.B)) {
-			textColor = "000000"
-		} else {
-			textColor = "FFFFFF"
-		}
-	}
-
-	text := fmt.Sprintf("%dx%d", g.Img.Rect.Max.X, g.Img.Rect.Max.Y)
-
+func (g *Gummy) DrawTextCenter(text string, textColor string) error {
 	// I can't get the text final size so more or less center the text with this
 	// manual awful stuff :/
 	size := g.Img.Rect.Max.Y
@@ -185,6 +180,12 @@ func (g *Gummy) DrawTextSize(textColor string) error {
 		x,
 		y,
 	)
+}
+
+// Color in HEX format: FAFAFA
+// If "" the color of the text is black or white depending on the brightness of the bg
+func (g *Gummy) DrawTextSize(textColor string) error {
+	return g.DrawTextCenter(fmt.Sprintf("%dx%d", g.Img.Rect.Max.X, g.Img.Rect.Max.Y), textColor)
 }
 
 func LoadFont(path string) (*truetype.Font, error) {
