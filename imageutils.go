@@ -62,10 +62,10 @@ func NewGummy(x, y, w, h int, gummyColor color.Color) (*Gummy, error) {
 /*
 Gets the image in the specified format (JPEG, GIF or PNG) in the specified writer
 */
-func (g *Gummy) get(format string, r io.Writer) error {
+func (g *Gummy) Get(format string, r io.Writer) error {
 
 	switch format {
-	case "jpeg", "JPEG":
+	case "jpeg", "JPEG", "jpg", "JPG":
 		jpeg.Encode(r, g.Img, nil)
 	case "png", "PNG":
 		png.Encode(r, g.Img)
@@ -85,7 +85,7 @@ func (g *Gummy) SaveJpeg(path string) error {
 	}
 	defer file.Close()
 
-	return g.get("jpeg", file)
+	return g.Get("jpeg", file)
 }
 
 func (g *Gummy) SaveGif(path string) error {
@@ -95,7 +95,7 @@ func (g *Gummy) SaveGif(path string) error {
 	}
 	defer file.Close()
 
-	return g.get("gif", file)
+	return g.Get("gif", file)
 }
 
 func (g *Gummy) SavePng(path string) error {
@@ -105,24 +105,24 @@ func (g *Gummy) SavePng(path string) error {
 	}
 	defer file.Close()
 
-	return g.get("png", file)
+	return g.Get("png", file)
 }
 
 func (g *Gummy) GetJpeg() ([]byte, error) {
 	b := new(bytes.Buffer)
-	err := g.get("jpeg", b)
+	err := g.Get("jpeg", b)
 	return b.Bytes(), err
 }
 
 func (g *Gummy) GetGif() ([]byte, error) {
 	b := new(bytes.Buffer)
-	err := g.get("gif", b)
+	err := g.Get("gif", b)
 	return b.Bytes(), err
 }
 
 func (g *Gummy) GetPng() ([]byte, error) {
 	b := new(bytes.Buffer)
-	err := g.get("png", b)
+	err := g.Get("png", b)
 	return b.Bytes(), err
 }
 
