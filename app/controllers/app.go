@@ -51,7 +51,13 @@ func (r ImageResponse) Apply(req *revel.Request, resp *revel.Response) {
 
 	g, _ := gummyimage.NewDefaultGummy(r.sizeX, r.sizeY, r.bgColor)
 	g.Font = font
-	g.DrawTextSize(r.fgColor)
+
+	// Custom text?
+	if len(r.text) == 0 {
+		g.DrawTextSize(r.fgColor)
+	} else {
+		g.DrawTextCenter(r.text, r.fgColor)
+	}
 
 	b := new(bytes.Buffer)
 	g.Get(r.format, b)
@@ -69,6 +75,7 @@ func (c Application) CreateImage() revel.Result {
 	// with different url params
 	var bgColor, fgColor string
 	format, _ := revel.Config.String("gummyimage.format.default")
+	text := c.Params.Get("text")
 
 	tmpValues := []string{
 		c.Params.Get("size"),
@@ -101,7 +108,7 @@ func (c Application) CreateImage() revel.Result {
 		return c.RenderText("wow, very big, too image,// Color in HEX format: FAFAFA much pixels")
 	}
 
-	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, "", format})
+	return ImageResponse(ImageResponse{x, y, bgColor, fgColor, text, format})
 }
 
 // Helpers--------------------------------------------------------------------
