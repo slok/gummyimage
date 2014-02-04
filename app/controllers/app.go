@@ -93,7 +93,10 @@ func (c Application) CreateImage() revel.Result {
 
 	x, y, err := getSize(tmpValues[0])
 	bgColor, err = colorOk(tmpValues[1])
-	fgColor = tmpValues[2]
+
+	if len(tmpValues[2]) > 0 {
+		fgColor, err = colorOk(tmpValues[2])
+	}
 
 	if err != nil {
 		return c.RenderText("Wrong size format")
@@ -165,29 +168,35 @@ func getSize(size string) (x, y int, err error) {
 	return
 }
 
-func colorOk(color string) (bgColor string, err error) {
+func colorOk(color string) (newColor string, err error) {
 
 	// Set defaults
 	if color == "" {
-		bgColor, _ = revel.Config.String("gummyimage.bgcolor.default")
+		newColor, _ = revel.Config.String("gummyimage.bgcolor.default")
 		return
 	} else if !correctColorRegex.MatchString(color) {
-		bgColor, _ = revel.Config.String("gummyimage.bgcolor.default")
+		newColor, _ = revel.Config.String("gummyimage.bgcolor.default")
 		err = errors.New("Wrong color format")
 		return
 	} else {
 		switch len(color) {
+		case 1:
+			newColor = ""
+			for i := 0; i < 6; i++ {
+				newColor += color
+			}
+			return
 		case 2:
-			bgColor = fmt.Sprintf("%s%s%s", color, color, color)
+			newColor = fmt.Sprintf("%s%s%s", color, color, color)
 			return
 		case 3:
 			c1 := string(color[0])
 			c2 := string(color[1])
 			c3 := string(color[2])
-			bgColor = fmt.Sprintf("%s%s%s%s%s%s", c1, c1, c2, c2, c3, c3)
+			newColor = fmt.Sprintf("%s%s%s%s%s%s", c1, c1, c2, c2, c3, c3)
 			return
 		}
 	}
-	bgColor = color
+	newColor = color
 	return
 }
