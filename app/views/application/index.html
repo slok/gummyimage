@@ -9,102 +9,220 @@
     <meta name="copyright" content="Xabier Larrakoetxea 2014" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="/public/css/foundation.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Pacifico|Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/public/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Pacifico|Open+Sans|Chewy' rel='stylesheet' type='text/css'>
     
     <style>
         body{
-            /*background-image:url(/public/img/bg.png);*/
-            background-color: #085A78;
+            color: #FFFFFF;
+            background-color: #008CD7;
         }
+
         h1, h2, h3{
+            font-family: 'Chewy', cursive;
+
+            color: #FFFFFF;
+            text-align: center;
+        }
+        h3{
+           font-size:250%; 
+        }
+        h2{
+            font-size:350%;
+        }
+
+        h1{
+            font-size:550%;
             font-family: 'Pacifico', cursive;
+            padding-bottom:10px;
         }
-        .center{
-            padding: 10px;
-            background-color: #FFFFFF;
-        }
+
         div, img{
             padding: 5px;
         }
         footer{
-            background-color: #333333;
+            background-color: #444444;
             width: 100%;
             bottom: 0;
             position: fixed;
         }
+
+        .bk1, .bk2, .bk3, .bk4, .bk65{
+            color: #FFFFFF;
+            padding-bottom:40px;
+            padding-top:30px;
+        }
+
+        .bk1{
+            background-color: #008CD7;
+            
+        }
+        .bk2{
+            background-color: #FFFFFF;
+            color: #505050;
+        }
+        .bk3{
+            background-color: #2CB55D;
+
+        }
+        .bk4{
+            background-color: #02425B;
+        }
+        .bk5{
+            background-color: #F36B6B;
+        }
+
+        h2.row.bk2{
+            color: #505050;
+        }
+
+        .center{
+            padding: 10px;
+        }
+
+        .fa-6x {
+          font-size: 6em;
+        }
+        .fa-7x {
+          font-size: 7em;
+        }
+        .fa-8x {
+          font-size: 8em;
+        }
+        .section-header{
+            text-align: center;
+            padding-bottom:20px;
+        }
+
+        .title{
+            text-align: center;
+            padding-bottom:50px;
+        }
+
+
+        a{
+            color: #FFFFFF;
+        }
+
+       .bk3 a:hover{
+            color: #186333;
+        }
+
+        b{
+            text-decoration: underline;
+        }
+
+        .bk3 a{
+            color: #228C48;
+        }
+
+
+        a:hover{
+            color: #02425B;
+        }
+
+        section{
+            font-size: 150%;
+            text-align: center;
+        }
+
+        img{
+            padding: 20px;
+        }
+
+        .link{
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+        }
+
+        .examples{
+            padding-top: 60px;
+            padding-bottom: 20px;
+        }
+
     </style>
 
   </head>
-  <body>
-    <div class="center row">
-
-        <h1 style="text-align: center;">Gummy image</h1>
+  <body class="bk1">
+    <div class="row">
+        
+        <div class="title">
+            <h1 style="text-align: center;">Gummy image</h1>
+        </div>
 
         <img src="600x400/074E68" alt="example" style="margin: 0px auto;display:block">
 
-        <a href="600x400/074E68"><h2 style="font-family: 'Open Sans', sans-serif;text-align: center;">http://gummyimage.com/600x400/074E68</h2>
-        </a>
-
-        <div class="row">
-          <div class="small-4 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Size</h5>
-                    <p>Regular: 800x600</p>
-                    <p>Scale: 800x4:3 or 4:3x600</p>
-                    <p>Aspect: VGA, PAL... (see list)</p>
-                </div>
-          </div>
-          <div class="small-2 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Background Color</h5>
-                    <p>Hex: 085A78</p>
-                    <p>2 digits: AF (same as AFAFAF)</p>
-                    <p>3 digits: 012 (same as 001122)</p>
-                </div>
-          </div>
-          <div class="small-6 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Text Color</h5>
-                    <p>Hex: 085A78</p>
-                    <p>2 digits: AF (same as AFAFAF)</p>
-                    <p>3 digits: 012 (same as 001122)</p>
-                </div>
-              
-          </div>
+        <a href="600x400/074E68"><h3 style="padding: 50px;" class="link">http://gummyimage.com/600x400/074E68</h3></a>
         </div>
-
+    </div>
+    <div class="bk2">
         <div class="row">
-           <div class="small-4 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Format</h5>
-                    <p>png</p>
-                    <p>gif</p>
-                    <p>jpg</p>
-                </div>
-          </div>
-          <div class="small-2 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Text</h5>
-                    <p>&text=something</p>
-                </div>
-          </div>
-          <div class="small-6 large-4 columns">
-                <div class="panel callout radius">
-                    <h5>Text Color</h5>
-                    <p>Hex: 085A78</p>
-                    <p>2 digits: AF (same as AFAFAF)</p>
-                    <p>3 digits: 012 (same as 001122)</p>
-                </div>
-              
-          </div>
-          </div>
+            <div class="section-header">
+                <i class="fa fa-expand fa-8x"></i>
+                <h2>Size</h2>
+            </div>
+        <section>
+         -----------
+         </section>
+        </div>
+    </div>
+    <div class="bk3">
+         <div class="row">
+            <div class="section-header">
+                <i class="fa fa-tint fa-8x"></i>          
+                <h2>Color</h2>
+            </div>
+         <section>
+             You can select the color you want for the background and text. The
+             <b>background</b> color always will be the <b>first</b> paramater and is optional (default is <b>#CCCCCC</b>),
+             the <b>second</b> parameter will be the <b>text</b> color, also optional (default will be B/W depending on te brightness of the background color).
+             Example:
+
+             <img src="300x200/228C48/186333" alt="example color" style="margin: 0px auto;display:block">
+
+             <a href="300x200/228C48/186333"><div class="link">http://gummyimage.com/300x200/228C48/186333</div></a>
+             <br/>
+             We have 4 formats, the regular one that will be simple HEX format: <b>228C48</b>. The 1 character format: <b>C</b>, this will be expanded to <b>CCCCCC</b>. The 2 character format: <b>FA</b>, this one will be translated to <b>FAFAFA</b>. And the 3 character format: <b>AC5</b>, this one will be translated to
+             <b>AACC55</b>
+             <div class="examples">
+                 <a href="600x400/AB/228C48/"><div class="link">http://gummyimage.com/600x400/AB/228C48</div></a>
+                 <a href="600x400/C4/3A6"><div class="link">http://gummyimage.com/600x400/C4/3A6</div></a>
+                 <a href="600x400/A/5"><div class="link">http://gummyimage.com/600x400/A/5</div></a>
+            </div>
+         </section>
+        </div>
+    </div>
+    <div class="bk4">
+         <div class="row">
+         <div class="section-header">
+             <i class="fa fa-font fa-8x"></i>
+            <h2>Text</h2>
+        </div>
+         <section>
+         -----------
+         </section>
+        </div>
+    </div>
+
+    <div class="bk5">
+         <div class="row">
+            <div class="section-header">
+                <i class="fa fa-picture-o fa-8x"></i>
+                <h2>Format</h2>
+            </div>
+          <section>
+            -----------
+         </section>
+        </div>
+    </div>
     </div>
 
     <footer>
         <div class="row">
-        Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de 
+         <section>
+            -----------
+         </section>
         </div>
     </footer>
-
   </body>
  </html>
