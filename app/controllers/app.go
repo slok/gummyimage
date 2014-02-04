@@ -31,7 +31,7 @@ var (
 	font              *truetype.Font
 	regularSizeRegex  = regexp.MustCompile(`^(.+)[xX](.+)$`)
 	aspectSizeRegex   = regexp.MustCompile(`^(.+):(.+)$`)
-	correctColorRegex = regexp.MustCompile(`^[A-Fa-f0-9]{2,6}$`)
+	correctColorRegex = regexp.MustCompile(`^[A-Fa-f0-9]{1,6}$`)
 	formatRegex       = regexp.MustCompile(`\.(jpg|jpeg|JPG|JPEG|gif|GIF|png|PNG)`)
 )
 
