@@ -10,16 +10,17 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="/public/css/foundation.min.css">
     <link rel="stylesheet" href="/public/css/font-awesome.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Pacifico|Open+Sans|Chewy' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico|Open+Sans|Comfortaa:400,700' rel='stylesheet' type='text/css'>
     
     <style>
         body{
             color: #FFFFFF;
             background-color: #008CD7;
+            font-family: 'Open Sans', sans-serif;
         }
 
         h1, h2, h3{
-            font-family: 'Chewy', cursive;
+            font-family: 'Comfortaa';
 
             color: #FFFFFF;
             text-align: center;
@@ -28,11 +29,11 @@
            font-size:250%; 
         }
         h2{
-            font-size:350%;
+            font-size:450%;
         }
 
         h1{
-            font-size:550%;
+            font-size:750%;
             font-family: 'Pacifico', cursive;
             padding-bottom:10px;
         }
@@ -41,13 +42,13 @@
             padding: 5px;
         }
         footer{
-            background-color: #444444;
+            background-color: #262626;
             width: 100%;
             bottom: 0;
             position: fixed;
         }
 
-        .bk1, .bk2, .bk3, .bk4, .bk65{
+        .bk1, .bk2, .bk3, .bk4, .bk5{
             color: #FFFFFF;
             padding-bottom:40px;
             padding-top:30px;
@@ -104,21 +105,44 @@
             color: #FFFFFF;
         }
 
-       .bk3 a:hover{
-            color: #186333;
-        }
 
         b{
             text-decoration: underline;
         }
-
-        .bk3 a{
-            color: #228C48;
+        a:hover{
+            color: #02425B;
         }
 
 
-        a:hover{
-            color: #02425B;
+       .bk2 a:hover{
+            color: #343434;
+        }
+        .bk2 a{
+            color: #6B6B6B;
+        }
+
+       .bk3 a:hover{
+            color: #186333;
+        }
+        .bk3 a{
+            color: #228C48;
+        }
+         .bk4 a{
+            color: #008CD7;
+        }
+        .bk4 a:hover{
+            color: #006BA4;
+        }
+
+        .bk5 a{
+            color: #a04545;
+        }
+        .bk5 a:hover{
+            color: #C35959;
+        }
+
+        .github:hover{
+            color: #FFFFFF;
         }
 
         section{
@@ -130,9 +154,16 @@
             padding: 20px;
         }
 
-        .link{
+        .link, .link-small, .link-big{
             font-family: 'Open Sans', sans-serif;
             text-align: center;
+        }
+        .link-small{
+            font-size: 80%;
+        }
+        .link-big{
+            font-size: 200%;
+            padding-bottom:50px;
         }
 
         .examples{
@@ -140,6 +171,26 @@
             padding-bottom: 20px;
         }
 
+        .subtitle{
+            font-family: 'Comfortaa';
+            padding-top: 10px;
+            padding-bottom: 20px;   
+            font-size: 450%;
+        }
+
+        .dark-title{
+            color: #505050;
+        }
+
+        table{
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .icon-footer{
+            color: #666666;
+        }
     </style>
 
   </head>
@@ -152,17 +203,132 @@
 
         <img src="600x400/074E68" alt="example" style="margin: 0px auto;display:block">
 
-        <a href="600x400/074E68"><h3 style="padding: 50px;" class="link">http://gummyimage.com/600x400/074E68</h3></a>
-        </div>
+        <a href="600x400/074E68"><div class="link-big">http://gummyimage.com/600x400/074E68</div></a>
+
+        <h3 class="subtitle">The Image generator for designers</h3>
     </div>
     <div class="bk2">
         <div class="row">
             <div class="section-header">
                 <i class="fa fa-expand fa-8x"></i>
-                <h2>Size</h2>
+                <h2 class="dark-title">Size</h2>
             </div>
         <section>
-         -----------
+            <div>The size of the image is the first argument. This is in <b>W x H</b> for example: 800x600
+            </div>
+            <div>
+            Gummy image also supports aspects in X:Y format in Width or height for example <b>1920x10:9</b>
+            </div>
+
+            <div>
+                There are some predefined sizes to use:
+
+                <div class="row">
+                <div class="small-2 large-4 columns">
+                     <table>
+                  <thead>
+                    <tr>
+                      <th>Keyword</th>
+                      <th>Shortcuts</th>
+                      <th>Size</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>mediumrectangle</td><td>medrect</td><td>300×250</td></tr>
+                    <tr><td>squarepopup</td><td>sqrpop</td><td>250×250</td></tr>
+                    <tr><td>verticalrectangle</td><td>vertrec</td><td>240×400</td></tr>
+                    <tr><td>largerectangle</td><td>lrgrec</td><td>336×280</td></tr>
+                    <tr><td>rectangle</td><td>rec</td><td>180×150 </td></tr>
+                    <tr><td>popunder</td><td>pop</td><td>720×300</td></tr>
+                    <tr><td>fullbanner</td><td>fullban</td><td>468×60</td></tr>
+                    <tr><td>halfbanner</td><td>halfban</td><td>234×60</td></tr>
+                    <tr><td>microbar</td><td>mibar</td><td>88×31</td></tr>
+                    <tr><td>button1</td><td>but1</td><td>120×90</td></tr>
+                    <tr><td>button2</td><td>but2</td><td>120×60</td></tr>
+                    <tr><td>verticalbanner</td><td>vertban</td><td>120×240</td></tr>
+                    <tr><td>squarebutton</td><td>sqrbut</td><td>125×125</td></tr>
+                    <tr><td>leaderboard</td><td>leadbrd</td><td>728×90</td></tr>
+                    <tr><td>wideskyscraper</td><td>wiskyscrpr</td><td>160×600</td></tr>
+                    <tr><td>skyscraper</td><td>skyscrpr</td><td>120×600</td></tr>
+                    <tr><td>halfpage</td><td> hpge</td><td>300×600</td></tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div class="small-2 large-4 columns">
+                    <table>
+                  <thead>
+                    <tr>
+                      <th>Keyword</th>
+                      <th>Size</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                        <tr><td>cga</td><td>320x200</td></tr>
+                        <tr><td>qvga</td><td>320x240</td></tr>
+                        <tr><td>vga</td><td>640x480</td></tr>
+                        <tr><td>wvga</td><td>800x480</td></tr>
+                        <tr><td>svga</td><td>800x480</td></tr>
+                        <tr><td>wsvga</td><td>1024x600</td></tr>
+                        <tr><td>xga</td><td>1024x768</td></tr>
+                        <tr><td>wxga</td><td>1280x800</td></tr>
+                        <tr><td>wsxga</td><td>1440x900</td></tr>
+                        <tr><td>wuxga</td><td>1920x1200</td></tr>
+                        <tr><td>wqxga</td><td>2560x1600</td></tr>
+                    </tbody>
+                </table>
+                   
+                </div>
+
+                <div class="small-2 large-4 columns">
+                     <table>
+                  <thead>
+                    <tr>
+                      <th>Keyword</th>
+                      <th>Size</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                        <tr><td>ntsc</td><td>720x480</td></tr>
+                        <tr><td>pal</td><td>768x576</td></tr>
+                        <tr><td>hd720</td><td>1280x720</td></tr>
+                        <tr><td>hd1080</td><td>1920x1080</td></tr>
+                    </tbody>
+                </table>
+                   
+                </div> 
+            </div>
+
+            </div>
+
+            <div class="row">
+                <div class="small-2 large-4 columns">
+                    <img src="/300x250/C/9B" alt="example text" style="margin: 0px auto;display:block">
+                    <a href="/300x250"><div class="link-small">http://gummyimage.com/300x250</div></a>
+                    <br/>
+                    <div>Pixels</div>
+                </div>
+                <div class="small-2 large-4 columns">
+                    <img src="/300x6:5/C/9A" alt="example text" style="margin: 0px auto;display:block">
+                    <a href="/300x6:5"><div class="link-small">http://gummyimage.com/300x6:5</div></a>
+                    <br/>
+                    <div>Aspect</div>
+                </div>
+
+                <div class="small-2 large-4 columns">
+                    <img src="/medrect/C/9A" alt="example text" style="margin: 0px auto;display:block">
+                    <a href="/medrect"><div class="link-small">http://gummyimage.com/medrect</div></a>
+                    <br/>
+                    <div>Predefined</div>
+                </div>
+
+            </div>
+
+            <div class="examples">
+                 <a href="1920x1080"><div class="link">http://gummyimage.com/1920x1080</div></a>
+                 <a href="/16:9x1080"><div class="link">http://gummyimage.com/16:9x1080</div></a>
+                 <a href="hd1080"><div class="link">http://gummyimage.com/hd1080</div></a>
+            </div>
+
          </section>
         </div>
     </div>
@@ -194,13 +360,25 @@
     </div>
     <div class="bk4">
          <div class="row">
-         <div class="section-header">
-             <i class="fa fa-font fa-8x"></i>
-            <h2>Text</h2>
-        </div>
-         <section>
-         -----------
+             <div class="section-header">
+                 <i class="fa fa-font fa-8x"></i>
+                <h2>Text</h2>
+            </div>
+             <section>
+                You can set the text whatever you want by <b>passing as argument</b>: <b>text=myText</b>. By <b>default the text will be the size of the image</b>. Keep in mind that some characters need to be encoded as URL, for example: spaces to %20 or using the simbol +
+
+              <img src="300x200/048ABF/B0E8FD?text=gummy+image" alt="example text" style="margin: 0px auto;display:block">
+              <a href="300x200/008CD7?text=gummy+image"><div class="link">http://gummyimage.com/300x200/008CD7?text=gummy+image</div></a>
+              <br/>
+              As you see you can set a lot of different characters but this characters should be supported by the font. in this case is <a href="http://www.google.com/fonts/specimen/Droid+Sans">Droid sans</a>
+
+             <div class="examples">
+                     <a href="600x400/C4/3A6?text=(-_-/!Gopher!\-_-)"><div class="link">http://gummyimage.com/600x400/C4/3A6?text=(-_-/!Gopher!\-_-)</div></a>
+                     <a href="600x400/C4/3A6?text=Check%20this%20out"><div class="link">http://gummyimage.com/600x400/C4/3A6?text=Check%20this%20out</div></a>
+                     <a href="600x400/A/5?text=·wóòôów'"><div class="link">http://gummyimage.com/600x400/A/5?text=·wóòôów'</div></a>
+            </div>
          </section>
+
         </div>
     </div>
 
@@ -211,18 +389,46 @@
                 <h2>Format</h2>
             </div>
           <section>
-            -----------
+            There are 3 formats available for the images, these are PNG, GIF and JPG. By default gummy image uses PNG format. You can set the format with dot notation (<b>.png, .gif, .jpg, .jpeg, .PNG, .GIF, .JPG, .JPEG</b>) in every place you want, this means for example at the end of the url (before text param: <b>AFAFAF.png</b>) or in the middle of any color, yup thats od but you can: <b>AFA.pngFAF</b>
+            <div class="row">
+                <div class="small-2 large-4 columns">
+                    <img src="300x200/C35959/894040.png" alt="example text" style="margin: 0px auto;display:block">
+                    <a href="300x200/C35959/894040.png"><div class="link-small">300x200/C35959/894040.png</div></a>
+                    <br/>
+                    <div>PNG Image</div>
+                    4,1 kiB
+                </div>
+                <div class="small-4 large-4 columns">
+                    <img src="300x200/C35959/894040.jpg" alt="example text" style="margin: 0px auto;display:block"> 
+                    <a href="300x200/C35959/894040.jpg"><div class="link-small">300x200/C35959/894040.jpg</div></a>
+                    <br/>
+                    <div>JPG Image</div>
+                    2,4 kiB
+                </div>
+                <div class="small-6 large-4 columns">
+                     <img src="300x200/C35959/894040.gif" alt="example text" style="margin: 0px auto;display:block">
+                     <a href="300x200/C35959/894040.gif"><div class="link-small">300x200/C35959/894040.gif</div></a>
+                    <br/>
+                    <div>GIF Image</div>
+                    9,1 kiB
+                </div>
+            </div>
+          <div class="examples">
+                 <a href="600x400/C4/3A6.png"><div class="link">http://gummyimage.com/600x400/C4/3A6.png</div></a>
+                 <a href="600x400/C4/3.jpgA6"><div class="link">http://gummyimage.com/600x400/C4/3.jpgA6</div></a>
+                 <a href="600x400/A.gif/5a"><div class="link">http://gummyimage.com/600x400/A.gif/5a</div></a>
+            </div>
          </section>
         </div>
     </div>
     </div>
 
     <footer>
-        <div class="row">
-         <section>
-            -----------
-         </section>
-        </div>
+        <section>
+            <div class="row">
+                <a href="http://github.com/slok/gummyimage" ><i class="github fa fa-github fa-2x icon-footer"></i></a>
+            </div>
+        </section>
     </footer>
   </body>
  </html>
